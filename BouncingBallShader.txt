@@ -1,0 +1,53 @@
+// Author:
+// Title:
+
+#ifdef GL_ES
+precision mediump float;
+#endif
+
+uniform vec2 u_resolution;
+uniform vec2 u_mouse;
+uniform float u_time;
+
+vec2 normal_mouse = u_mouse/u_resolution;
+
+
+float radius = 0.2;
+
+float thickness = 0.01; // floor thickness
+
+vec4 color = vec4(1.0);
+
+void main() {
+    
+    float floor = normal_mouse.y;
+    vec2 center = vec2(0.5, floor+radius);
+    
+    vec2 normal_pos = gl_FragCoord.xy/u_resolution;
+    float amount = 0.0; // amount the ball changes size in each axis
+    
+    float t = fract(u_time); // time
+    
+    float h = -(pow((1.4*t-0.7),2.0))+0.3; // height of the ball
+    
+    if (h < 0.0){
+        amount = 0.0-h*2.;
+        h = 0.0;
+    }
+    
+    vec2 pressed = vec2(1.0 + amount, 1.0 - amount);
+    
+    if ((normal_pos.y <= floor) && (normal_pos.y >= floor - thickness)){
+        color = vec4(0.0);
+    }
+    
+    if (pow(normal_pos.x - center.x,2.0)/pressed.x + pow(normal_pos.y - center.y - h, 2.0)/pressed.y <= pow(radius, 2.0)){
+        color = vec4(h);
+    }
+    
+    
+    gl_FragColor = vec4(color);
+}
+
+
+
