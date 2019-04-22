@@ -40,7 +40,10 @@ void main() {
     }
     
     if (pow(normal_pos.x - center.x,2.0)/pressed.x + pow(normal_pos.y - center.y - h, 2.0)/pressed.y <= pow(radius, 2.0)){
-        color = vec4(0.0);
+        //color = vec4(0.0);
+        color.r = fract(1.0-7.*normal_pos.x*(center.y-floor_y) - (normal_pos.y - floor_y) + h);
+        color.g = fract(1.-11.*normal_pos.x*(center.y-floor_y) - (normal_pos.y - floor_y) + h);
+        color.b = fract(1.-6.*normal_pos.x*(center.y-floor_y) - (normal_pos.y - floor_y) + h);
     }
     
     if (t >= 0.9 || t <= 0.5){
